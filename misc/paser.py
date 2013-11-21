@@ -7,7 +7,7 @@ It is designed to parse CAVIAR Dataset, and can be quickly adapted to other data
 
 Input: filename of the xml file
 Output: a series of txt files, each contains ground truth of an image in the dataset
-Each row contains 6 data fields, the id of the target, height and weight of the bounding box, 
+Each row contains 6 data fields, the id of the target, height and width of the bounding box, 
 the center of bbox in (xc, yc) format and its appearance (0: appear, 1:visible, 2:disapear, 3:occluded)
 
 Configs:
@@ -18,9 +18,16 @@ Author: ApprenticeZ
 '''
 
 from xml.etree import ElementTree
+import sys
 
-infilePath = r"I:\AVIP\fore-background-detection\cwbs1gt.xml"
-ofilePath = r"I:\AVIP\fore-background-detection\WalkByShop1cor\frame"
+# if len(sys.argv) < 3:
+	# print 'not enough arguments'
+	# sys.exit()
+
+infilePath = r"I:\AVIP\fore-background-detection\TwoLeaveShop1cor\gt\c2ls1gt.xml"
+# sys.argv[1]+"\\gt\\"+sys.argv[2] 
+ofilePath = r"I:\AVIP\fore-background-detection\TwoLeaveShop1cor\gt\frame"
+# sys.argv[1]+r"\gt\frame"
 appearanceState = {'appear':0, 'visible':1, 'disappear':2, 'occluded':3}
 xmldoc = ElementTree.parse(infilePath)
 framelist = xmldoc.getiterator('frame')

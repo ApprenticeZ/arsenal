@@ -14,8 +14,8 @@ Author: ApprenticeZ
 import os
 import os.path
 
-dataset_directory = r"I:\AVIP\workspace\dataset\an\pos"
-out = open(os.path.join(r"I:\AVIP\workspace\dataset\an", "poslist.txt"), 'w')
+dataset_directory = r"I:\AVIP\workspace\Dataset\an\jpg2"
+out = open(os.path.join(r"I:\AVIP\workspace\dataset\an", "training-poslist.txt"), 'w')
 for parent, dirnames, filenames in os.walk(dataset_directory):
 	out.write(parent+"\n");
 	for imname in filenames:
