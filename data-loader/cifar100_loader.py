@@ -10,14 +10,18 @@ import cv2
 
 parser = argparse.ArgumentParser(description='parse cifar 100 data')
 parser.add_argument('--data-dir',type=str,default='/qydata/yzhangdx/dataset/cifar-100-python',help='path to load original data files')
-parser.add_argument('--save-dir',type=str,default='/qydata/yzhangdx/dataset/cifar-100-python',help='path to save images')
+parser.add_argument('--img-save-dir',type=str,default='/qydata/yzhangdx/dataset/cifar-100-python',help='path to save images')
+parser.add_argument('--lst-save-dir',type=str,default='/qydata/yzhangdx/dataset/cifar-100-python',help='path to save image.lst')
 args = parser.parse_args()
+
+K_JOIN = '\t'
 
 def unpickle(args,setType):
 	# create save dir if it does not exist
-	savepath = os.path.join(args.save_dir,setType+'-img')
+	savepath = os.path.join(args.img_save_dir,setType+'-img')
 	if not os.path.isdir(savepath):
 		os.system('mkdir '+savepath)
+	lst_file = open(os.path.join(args.lst_save_dir,setType+'.lst'),'w')
 	# load data file
 	df = open(os.path.join(args.data_dir,setType),'rb')
 	d = cPickle.load(df)
@@ -35,7 +39,11 @@ def unpickle(args,setType):
 		im = cv2.merge((r,g,b))
 		# write to disk
 		cv2.imwrite(os.path.join(savepath,d['filenames'][idx]),im)
+		# write label+filename to lst file
+		lst_info = map(str,[idx,d['fine_labels'][idx],d['coarse_labels'][idx],d['filenames'][idx]])
+		lst_file.write(K_JOIN.join(lst_info)+'\n')
 	df.close()
+	lst_file.close()
 
 unpickle(args,'train')
 unpickle(args,'test')
